@@ -1,23 +1,13 @@
-// src/App.js
 import React from 'react';
+import FinalYearSchedule from './finalYearSchedule';
 
 function App() {
   return (
-    <div style={styles.container}>
+    <div className="App">
       <h1>🎯 Final Year Tracker</h1>
-      <p>Track your daily progress, placements, GATE, and CGL prep here!</p>
+      <FinalYearSchedule /> {/* This renders your schedules */}
     </div>
   );
 }
-
-const styles = {
-  container: {
-    fontFamily: 'Arial, sans-serif',
-    padding: '2rem',
-    textAlign: 'center',
-    backgroundColor: '#f5f5f5',
-    minHeight: '100vh',
-  },
-};
 
 export default App;
