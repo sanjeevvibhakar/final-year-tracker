@@ -1,48 +1,13 @@
+// src/components/FinalYearRoutineTracker.jsx
+
 import React, { useState, useEffect } from "react";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Card, CardContent } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
 import { BarChart, Bar, XAxis, YAxis, Tooltip } from "recharts";
-import finalYearSchedule from '../finalYearSchedule';
+import finalYearSchedule from "../finalYearSchedule";
 
-
-const dailySchedule = {
-  Monday: [
-    { task: "📚 DSA: Arrays & Strings", key: "dsa1", icon: "🧠" },
-    { task: "📘 GATE: DBMS - ER Models", key: "gate1", icon: "📊" },
-    { task: "👨‍💻 Project: Setup Repo & Readme", key: "proj1", icon: "🚀" }
-  ],
-  Tuesday: [
-    { task: "📚 DSA: Linked Lists", key: "dsa2", icon: "🔗" },
-    { task: "📘 GATE: DBMS - Relational Models", key: "gate2", icon: "🗃️" },
-    { task: "🤹‍♂️ Coding Practice", key: "cp1", icon: "💻" }
-  ],
-  Wednesday: [
-    { task: "📚 DSA: Stacks & Queues", key: "dsa3", icon: "📐" },
-    { task: "📘 GATE: OS - Process Management", key: "gate3", icon: "🧵" },
-    { task: "🗣️ Communication Practice", key: "comm1", icon: "🎙️" }
-  ],
-  Thursday: [
-    { task: "📚 DSA: Trees", key: "dsa4", icon: "🌳" },
-    { task: "📘 GATE: OS - Memory Management", key: "gate4", icon: "💾" },
-    { task: "👨‍💼 Personality Dev Video", key: "pers1", icon: "📹" }
-  ],
-  Friday: [
-    { task: "📚 DSA: Graphs", key: "dsa5", icon: "🕸️" },
-    { task: "📘 GATE: CN - Intro & Models", key: "gate5", icon: "🌐" },
-    { task: "📝 Logical Reasoning", key: "lr1", icon: "🧩" }
-  ],
-  Saturday: [
-    { task: "📚 DSA: Recursion & Backtracking", key: "dsa6", icon: "🌀" },
-    { task: "📘 GATE: CN - Error Detection", key: "gate6", icon: "📡" },
-    { task: "💻 Project Dev Work", key: "proj2", icon: "🛠️" }
-  ],
-  Sunday: [
-    { task: "📚 DSA Revision", key: "dsa7", icon: "🔁" },
-    { task: "📘 GATE Weekly Revision", key: "gate7", icon: "📚" },
-    { task: "🧘 Chill & Plan Ahead", key: "relax", icon: "☕" }
-  ]
-};
+const dailySchedule = finalYearSchedule;
 
 const FinalYearRoutineTracker = () => {
   const [progress, setProgress] = useState({});
@@ -66,17 +31,24 @@ const FinalYearRoutineTracker = () => {
 
   const toggleTask = (day, key) => {
     const today = new Date().toISOString().split("T")[0];
-    setProgress(prev => ({ ...prev, [`${day}_${key}_${today}`]: !prev[`${day}_${key}_${today}`] }));
+    setProgress(prev => ({
+      ...prev,
+      [`${day}_${key}_${today}`]: !prev[`${day}_${key}_${today}`],
+    }));
   };
 
   const todayStr = new Date().toISOString().split("T")[0];
   const chartData = Object.keys(dailySchedule).map(day => {
     const total = dailySchedule[day].length;
-    const done = dailySchedule[day].filter(t => progress[`${day}_${t.key}_${todayStr}`]).length;
+    const done = dailySchedule[day].filter(
+      t => progress[`${day}_${t.key}_${todayStr}`]
+    ).length;
     return { day: day.slice(0, 3), done, total };
   });
 
-  const isPerfectDay = chartData.find(c => c.day === new Date().toDateString().slice(0, 3))?.done === chartData.find(c => c.day === new Date().toDateString().slice(0, 3))?.total;
+  const isPerfectDay =
+    chartData.find(c => c.day === new Date().toDateString().slice(0, 3))?.done ===
+    chartData.find(c => c.day === new Date().toDateString().slice(0, 3))?.total;
 
   return (
     <div className="p-6">
@@ -103,7 +75,9 @@ const FinalYearRoutineTracker = () => {
       <Tabs defaultValue="Monday">
         <TabsList className="grid grid-cols-7 gap-1">
           {Object.keys(dailySchedule).map(day => (
-            <TabsTrigger key={day} value={day}>{day}</TabsTrigger>
+            <TabsTrigger key={day} value={day}>
+              {day}
+            </TabsTrigger>
           ))}
         </TabsList>
 
@@ -117,7 +91,15 @@ const FinalYearRoutineTracker = () => {
                     onCheckedChange={() => toggleTask(day, key)}
                   />
                   {icon && <span>{icon}</span>}
-                  <span className={progress[`${day}_${key}_${todayStr}`] ? "line-through" : ""}>{task}</span>
+                  <span
+                    className={
+                      progress[`${day}_${key}_${todayStr}`]
+                        ? "line-through"
+                        : ""
+                    }
+                  >
+                    {task}
+                  </span>
                 </CardContent>
               </Card>
             ))}
@@ -127,7 +109,13 @@ const FinalYearRoutineTracker = () => {
 
       <button
         className="mt-6 p-2 border rounded bg-blue-200 hover:bg-blue-300"
-        onClick={() => Notification.requestPermission().then(p => p === "granted" && new Notification("📌 Check your routine today!"))}
+        onClick={() =>
+          Notification.requestPermission().then(
+            p =>
+              p === "granted" &&
+              new Notification("📌 Check your routine today!")
+          )
+        }
       >
         Enable Daily Reminder 🔔
       </button>
