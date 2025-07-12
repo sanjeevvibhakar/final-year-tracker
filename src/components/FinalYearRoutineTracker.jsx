@@ -42,7 +42,6 @@ const dailySchedule = {
   ]
 };
 
-
 const FinalYearRoutineTracker = () => {
   const [progress, setProgress] = useState({});
   const [theme, setTheme] = useState("light");
